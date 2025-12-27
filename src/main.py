@@ -12,13 +12,6 @@ from pathlib import Path
 
 from cfg_patcher import patch_and_generate
 
-#
-# Structure:
-# - "skip_files": List of .cfg files to leave completely unchanged
-# - "configs": Dict of SID -> patch settings
-#   - "skip_weathers": Weather types to leave unchanged within this config
-#   - "weathers": Dict of weather_type -> parameters to patch
-#
 # Available parameters:
 #   BlendWeight (float): Selection probability weight
 #   BlendWeightIncrease (float): Weight increase over time
@@ -47,7 +40,7 @@ if __name__ == "__main__":
     src_dir = Path(__file__).parent
     repo_root = src_dir.parent
     original_dir = repo_root / "original_config_chunked"
-    output_path = src_dir / "config" / "patched_combined.cfg"
+    output_path = repo_root / "dist" / "output.cfg"
     patch_json = src_dir / "config" / "patches.json"
 
     if not patch_json.exists():

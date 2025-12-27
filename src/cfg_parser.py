@@ -186,18 +186,3 @@ def parse_all_configs(config_dir: Path) -> list[ConfigData]:
     """
     cfg_files = sorted(config_dir.glob("*.cfg"))
     return [parse_cfg_file(f) for f in cfg_files]
-
-
-if __name__ == "__main__":
-    # Test parsing
-    import json
-
-    config_dir = Path(__file__).parent / "config" / "original_chunked"
-    configs = parse_all_configs(config_dir)
-
-    for config in configs[:3]:
-        print(f"\n=== {config.filename} ===")
-        print(f"ID: {config.config_id}, RefKey: {config.refkey}")
-        print(f"SID: {config.sid}, Priority: {config.priority}")
-        print(f"Extra params: {config.extra_params}")
-        print(f"Weather types: {list(config.weather_types.keys())}")

@@ -89,7 +89,6 @@ def generate_config_output(config: ConfigData) -> str:
 
     # Footer
     lines.append("struct.end")
-    lines.append("")  # Empty line at end
 
     return "\n".join(lines)
 
@@ -188,35 +187,3 @@ def patch_and_generate(
         print(f"Output written to {output_path}")
 
     return combined
-
-
-if __name__ == "__main__":
-    # Example usage
-    from pathlib import Path
-
-    original_dir = Path(__file__).parent / "config" / "original_chunked"
-    output_path = Path(__file__).parent / "config" / "patched_combined.cfg"
-
-    # Example patch: Make it sunnier!
-    patch_data = {
-        "skip_files": [
-            "01_Empty.cfg",
-            "02_BaseWeatherHistory.cfg",
-        ],
-        "configs": {
-            "VortexWeatherSelection": {
-                "skip_weathers": ["Emission", "CalmBeforeEmission"],
-                "weathers": {
-                    "Clearly": {"BlendWeight": 80.0},
-                    "Cloudy": {"BlendWeight": 20.0},
-                    "Stormy": {"BlendWeight": 0.0},
-                    "LightRainy": {"BlendWeight": 0.0},
-                    "Rainy": {"BlendWeight": 0.0},
-                    "Thundery": {"BlendWeight": 0.0},
-                }
-            },
-        }
-    }
-
-    result = patch_and_generate(original_dir, patch_data, output_path)
-    print("Done!")

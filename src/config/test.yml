@@ -1,25 +1,13 @@
-VortexWeatherSelection:
+YanovWeatherSelection:
   Clearly:
-    BlendWeight: 80.0
+    BlendWeight: 35.0
   Cloudy:
     BlendWeight: 20.0
-  Fogy:
-    BlendWeight: 0.0
-  Stormy:
-    BlendWeight: 0.0
-  LightRainy:
-    BlendWeight: 0.0
   Rainy:
-    BlendWeight: 0.0
-  Thundery:
-    BlendWeight: 0.0
+    BlendWeight: 25.0
 
-SwampWeatherSelection:
+RostokWeatherSelection:
   Clearly:
-    BlendWeight: 50.0
-  Cloudy:
-    BlendWeight: 20.0
-  Rainy:
-    BlendWeight: 20.0
+    BlendWeight: 45.0
   LightRainy:
-    BlendWeight: 10.0
+    BlendWeight: 15.0

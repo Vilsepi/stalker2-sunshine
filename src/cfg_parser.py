@@ -35,7 +35,7 @@ class ConfigData:
     config_id: str  # Can be numeric "[0]" or named "SwampWeatherSelection"
     refkey: str | None  # e.g., "[0]" or "[1]"
     sid: str
-    priority: int
+    priority: int | None = None  # None means Priority field doesn't exist in original
     weather_types: dict[str, WeatherTypeData] = field(default_factory=dict)
     extra_params: dict[str, str] = field(default_factory=dict)  # e.g., EmissionPrototypeSID
     weather_order: list[str] = field(default_factory=list)  # Preserve original order
@@ -96,7 +96,7 @@ def parse_cfg_file(filepath: Path) -> ConfigData:
     config_id = ""
     refkey = None
     sid = ""
-    priority = 0
+    priority: int | None = None
     weather_types: dict[str, WeatherTypeData] = {}
     extra_params: dict[str, str] = {}
     weather_order: list[str] = []

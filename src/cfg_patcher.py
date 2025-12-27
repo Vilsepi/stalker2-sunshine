@@ -61,8 +61,8 @@ def generate_config_output(config: ConfigData) -> str:
     # SID
     lines.append(f"   SID = {config.sid}")
 
-    # Priority (if not the base Empty config which has Priority = 0)
-    if config.priority > 0 or config.config_id == "[0]":
+    # Priority (only if it exists in original)
+    if config.priority is not None:
         lines.append(f"   Priority = {config.priority}")
 
     # Extra params (e.g., EmissionPrototypeSID)

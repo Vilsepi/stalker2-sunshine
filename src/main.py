@@ -3,13 +3,13 @@
 STALKER 2 Weather Config Patcher
 
 Main entry point for generating patched weather configuration files.
-Usage: python main.py <patch_file.json>
+Usage: python main.py <patch_file.yml>
 """
 
 import argparse
-import json
 import sys
 from pathlib import Path
+import yaml
 
 from cfg_patcher import patch_and_generate
 
@@ -22,18 +22,18 @@ from cfg_patcher import patch_and_generate
 #   MaximumCooldownWeatherAmount (int): Cooldown in weather cycles
 
 
-def load_patch_from_json(json_path: Path) -> dict:
+def load_patch_from_yaml(yaml_path: Path) -> dict:
     """
-    Load patch configuration from a JSON file.
+    Load patch configuration from a YAML file.
 
     Args:
-        json_path: Path to the JSON file
+        yaml_path: Path to the YAML file
 
     Returns:
         Patch configuration dictionary
     """
-    with open(json_path) as f:
-        return json.load(f)
+    with open(yaml_path) as f:
+        return yaml.safe_load(f)
 
 
 if __name__ == "__main__":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "patch_file",
-        help="Name of the patch JSON file in the config directory (e.g., patches.json)",
+        help="Name of the patch YAML file in the config directory (e.g., patches.yml)",
     )
     args = parser.parse_args()
 
@@ -50,13 +50,13 @@ if __name__ == "__main__":
     repo_root = src_dir.parent
     original_dir = repo_root / "original_config_chunked"
     output_path = repo_root / "dist" / "output.cfg"
-    patch_json = src_dir / "config" / args.patch_file
+    patch_yaml = src_dir / "config" / args.patch_file
 
-    if not patch_json.exists():
-        print(f"Error: Patch file not found: {patch_json}")
+    if not patch_yaml.exists():
+        print(f"Error: Patch file not found: {patch_yaml}")
         sys.exit(1)
 
-    patch_config = load_patch_from_json(patch_json)
+    patch_config = load_patch_from_yaml(patch_yaml)
     result = patch_and_generate(original_dir, patch_config, output_path)
 
     print(f"\nGenerated {len(result.splitlines())} lines of config")

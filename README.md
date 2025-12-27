@@ -6,9 +6,16 @@ This mod only modifies the following file:
 
 `Stalker2\Content\GameLite\GameData\WeatherSelectionPrototypes.cfg`
 
-## Development
+## Usage
 
-    cat src/config/original_chunked/*.cfg | sed 's/$/\r/' > src/config/combined.cfg
+Create a patch file in YAML format in `src/config/` directory (e.g., `test.yml`).
+
+Run the patcher:
+
+    cd src
+    python3 main.py test.yml
+
+## Development
 
 Convert all line endings to CRLF Windows line endings which the game uses:
 

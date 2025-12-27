@@ -2,7 +2,7 @@
 # Running the program
 
     cd src
-    python3 main.py test.json
+    python3 main.py test.yml
 
 # Reference files
 

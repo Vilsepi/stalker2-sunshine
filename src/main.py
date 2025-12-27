@@ -3,9 +3,10 @@
 STALKER 2 Weather Config Patcher
 
 Main entry point for generating patched weather configuration files.
-Edit the PATCH_CONFIG below to customize weather settings.
+Usage: python main.py <patch_file.json>
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -36,16 +37,23 @@ def load_patch_from_json(json_path: Path) -> dict:
 
 
 if __name__ == "__main__":
-    """Alternative entry point using JSON patch file."""
+    parser = argparse.ArgumentParser(
+        description="Generate patched weather configuration files for STALKER 2"
+    )
+    parser.add_argument(
+        "patch_file",
+        help="Name of the patch JSON file in the config directory (e.g., patches.json)",
+    )
+    args = parser.parse_args()
+
     src_dir = Path(__file__).parent
     repo_root = src_dir.parent
     original_dir = repo_root / "original_config_chunked"
     output_path = repo_root / "dist" / "output.cfg"
-    patch_json = src_dir / "config" / "patches.json"
+    patch_json = src_dir / "config" / args.patch_file
 
     if not patch_json.exists():
         print(f"Error: Patch file not found: {patch_json}")
-        print("Create patches.json or use main() with inline PATCH_CONFIG")
         sys.exit(1)
 
     patch_config = load_patch_from_json(patch_json)

@@ -1,0 +1,2 @@
+# Force Windows CRLF line endings for config files
+*.cfg text eol=crlf

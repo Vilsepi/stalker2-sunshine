@@ -1,2 +1,7 @@
 # stalker2-sunshine
-Better weather
+
+
+This mod modifies the following file:
+
+`Stalker2\Content\GameLite\GameData\WeatherSelectionPrototypes.cfg`
+

@@ -1,0 +1,29 @@
+{
+  "skip_files": [
+    "01_Empty.cfg",
+    "02_BaseWeatherHistory.cfg"
+  ],
+  "configs": {
+    "VortexWeatherSelection": {
+      "skip_weathers": ["Emission", "CalmBeforeEmission"],
+      "weathers": {
+        "Clearly": {"BlendWeight": 80.0},
+        "Cloudy": {"BlendWeight": 20.0},
+        "Fogy": {"BlendWeight": 0.0},
+        "Stormy": {"BlendWeight": 0.0},
+        "LightRainy": {"BlendWeight": 0.0},
+        "Rainy": {"BlendWeight": 0.0},
+        "Thundery": {"BlendWeight": 0.0}
+      }
+    },
+    "SwampWeatherSelection": {
+      "skip_weathers": ["Emission", "CalmBeforeEmission"],
+      "weathers": {
+        "Clearly": {"BlendWeight": 50.0},
+        "Cloudy": {"BlendWeight": 20.0},
+        "Rainy": {"BlendWeight": 20.0},
+        "LightRainy": {"BlendWeight": 10.0}
+      }
+    }
+  }
+}

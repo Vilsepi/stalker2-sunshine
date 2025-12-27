@@ -1,0 +1,247 @@
+#!/usr/bin/env python3
+"""
+Config patcher for STALKER 2 weather configuration files.
+Applies patches from a dict/JSON structure to original configs.
+"""
+
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+from cfg_parser import ConfigData, WeatherTypeData, format_value, parse_all_configs
+
+
+@dataclass
+class PatchConfig:
+    """
+    Configuration for patching weather configs.
+
+    Patch format:
+    {
+        # Files to skip entirely (use original unchanged)
+        "skip_files": ["01_Empty.cfg", "02_BaseWeatherHistory.cfg"],
+
+        # Patches per config SID
+        "configs": {
+            "VortexWeatherSelection": {
+                # Weather types to skip (don't patch, use original)
+                "skip_weathers": ["Emission", "CalmBeforeEmission"],
+
+                # Patches for specific weather types
+                "weathers": {
+                    "Clearly": {
+                        "BlendWeight": 80.0,
+                        "WeatherDurationMin": 800.0
+                    },
+                    "Cloudy": {
+                        "BlendWeight": 20.0
+                    }
+                }
+            }
+        }
+    }
+    """
+    skip_files: list[str]
+    configs: dict[str, dict[str, Any]]
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "PatchConfig":
+        """Create PatchConfig from a dictionary."""
+        return cls(
+            skip_files=data.get("skip_files", []),
+            configs=data.get("configs", {}),
+        )
+
+
+def generate_config_output(config: ConfigData) -> str:
+    """
+    Generate the .cfg file content from a ConfigData object.
+
+    Args:
+        config: The config data to generate output for
+
+    Returns:
+        String content of the .cfg file
+    """
+    lines = []
+
+    # Header line
+    if config.refkey:
+        lines.append(f"{config.config_id} : struct.begin {{refkey={config.refkey}}}")
+    else:
+        lines.append(f"{config.config_id} : struct.begin")
+
+    # SID
+    lines.append(f"   SID = {config.sid}")
+
+    # Priority (if not the base Empty config which has Priority = 0)
+    if config.priority > 0 or config.config_id == "[0]":
+        lines.append(f"   Priority = {config.priority}")
+
+    # Extra params (e.g., EmissionPrototypeSID)
+    for param_name, param_value in config.extra_params.items():
+        lines.append(f"   {param_name} = {param_value}")
+
+    # Weather types in original order
+    for weather_name in config.weather_order:
+        weather = config.weather_types[weather_name]
+
+        # Handle slight formatting variation: "Underground:" vs "Underground :"
+        if weather_name == "Underground":
+            lines.append(f"   {weather_name}: struct.begin")
+        else:
+            lines.append(f"   {weather_name} : struct.begin")
+
+        # Parameters in standard order
+        for param_name in WeatherTypeData.PARAM_ORDER:
+            if param_name in weather.params:
+                value = format_value(weather.params[param_name])
+                lines.append(f"      {param_name} = {value}")
+
+        lines.append("   struct.end")
+
+    # Footer
+    lines.append("struct.end")
+    lines.append("")  # Empty line at end
+
+    return "\n".join(lines)
+
+
+def apply_patches(
+    configs: list[ConfigData],
+    patch_config: PatchConfig,
+) -> list[ConfigData]:
+    """
+    Apply patches to a list of configs.
+
+    Args:
+        configs: List of original ConfigData objects
+        patch_config: The patch configuration to apply
+
+    Returns:
+        List of patched ConfigData objects (copies, originals unchanged)
+    """
+    import copy
+
+    patched_configs = []
+
+    for config in configs:
+        # Check if this file should be skipped
+        if config.filename in patch_config.skip_files:
+            patched_configs.append(config)
+            continue
+
+        # Check if there are patches for this config's SID
+        if config.sid not in patch_config.configs:
+            patched_configs.append(config)
+            continue
+
+        # Deep copy to avoid modifying original
+        patched = copy.deepcopy(config)
+        config_patches = patch_config.configs[config.sid]
+
+        # Get weather types to skip
+        skip_weathers = config_patches.get("skip_weathers", [])
+
+        # Get weather patches
+        weather_patches = config_patches.get("weathers", {})
+
+        # Apply patches to each weather type
+        for weather_name, weather_data in patched.weather_types.items():
+            if weather_name in skip_weathers:
+                continue
+
+            if weather_name in weather_patches:
+                for param_name, param_value in weather_patches[weather_name].items():
+                    weather_data.params[param_name] = param_value
+
+        patched_configs.append(patched)
+
+    return patched_configs
+
+
+def generate_combined_config(configs: list[ConfigData]) -> str:
+    """
+    Generate the combined .cfg file from all configs.
+
+    Args:
+        configs: List of ConfigData objects in order
+
+    Returns:
+        Combined config file content
+    """
+    parts = []
+    for config in configs:
+        parts.append(generate_config_output(config))
+
+    return "\n".join(parts)
+
+
+def patch_and_generate(
+    original_dir: Path,
+    patch_data: dict,
+    output_path: Path | None = None,
+) -> str:
+    """
+    Main function: parse originals, apply patches, generate output.
+
+    Args:
+        original_dir: Path to directory with original .cfg files
+        patch_data: Dictionary with patch configuration
+        output_path: Optional path to write output file (with CRLF)
+
+    Returns:
+        Combined config file content
+    """
+    # Parse all original configs
+    configs = parse_all_configs(original_dir)
+
+    # Create patch config
+    patch_config = PatchConfig.from_dict(patch_data)
+
+    # Apply patches
+    patched_configs = apply_patches(configs, patch_config)
+
+    # Generate combined output
+    combined = generate_combined_config(patched_configs)
+
+    # Write to file if path provided
+    if output_path:
+        # Convert to CRLF line endings for the game
+        combined_crlf = combined.replace("\n", "\r\n")
+        output_path.write_text(combined_crlf)
+        print(f"Output written to {output_path}")
+
+    return combined
+
+
+if __name__ == "__main__":
+    # Example usage
+    from pathlib import Path
+
+    original_dir = Path(__file__).parent / "config" / "original_chunked"
+    output_path = Path(__file__).parent / "config" / "patched_combined.cfg"
+
+    # Example patch: Make it sunnier!
+    patch_data = {
+        "skip_files": [
+            "01_Empty.cfg",
+            "02_BaseWeatherHistory.cfg",
+        ],
+        "configs": {
+            "VortexWeatherSelection": {
+                "skip_weathers": ["Emission", "CalmBeforeEmission"],
+                "weathers": {
+                    "Clearly": {"BlendWeight": 80.0},
+                    "Cloudy": {"BlendWeight": 20.0},
+                    "Stormy": {"BlendWeight": 0.0},
+                    "LightRainy": {"BlendWeight": 0.0},
+                    "Rainy": {"BlendWeight": 0.0},
+                    "Thundery": {"BlendWeight": 0.0},
+                }
+            },
+        }
+    }
+
+    result = patch_and_generate(original_dir, patch_data, output_path)
+    print("Done!")

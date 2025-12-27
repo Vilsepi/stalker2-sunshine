@@ -181,9 +181,10 @@ def patch_and_generate(
     if output_path:
         # Ensure output directory exists
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        # Convert to CRLF line endings for the game
-        combined_crlf = combined.replace("\n", "\r\n")
-        output_path.write_text(combined_crlf)
+        # Convert to CRLF line endings for the game and add trailing newline
+        combined_crlf = combined.replace("\n", "\r\n") + "\r\n"
+        # Write with UTF-8 BOM to match original file
+        output_path.write_bytes(b'\xef\xbb\xbf' + combined_crlf.encode('utf-8'))
         print(f"Output written to {output_path}")
 
     return combined

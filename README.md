@@ -27,6 +27,12 @@ Use [repak](https://github.com/trumank/repak) to package the config file into a 
 
 This will conflict with any other mod that modifies `WeatherSelectionPrototypes.cfg`.
 
+You should make a directory structure `sunshine\Stalker2\Content\GameLite\GameData\WeatherSelectionPrototypes.cfg`.
+
+Then:
+
+    repak pack sunshine sunshine.pak
+
 ## Weather mods by other authors
 
 There is already a bunch of existing weather mods, but none of them did what I wanted.

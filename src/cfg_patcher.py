@@ -16,41 +16,28 @@ class PatchConfig:
     """
     Configuration for patching weather configs.
 
-    Patch format:
+    Patch format - simple SID -> weather -> params mapping:
     {
-        # Files to skip entirely (use original unchanged)
-        "skip_files": ["01_Empty.cfg", "02_BaseWeatherHistory.cfg"],
-
-        # Patches per config SID
-        "configs": {
-            "VortexWeatherSelection": {
-                # Weather types to skip (don't patch, use original)
-                "skip_weathers": ["Emission", "CalmBeforeEmission"],
-
-                # Patches for specific weather types
-                "weathers": {
-                    "Clearly": {
-                        "BlendWeight": 80.0,
-                        "WeatherDurationMin": 800.0
-                    },
-                    "Cloudy": {
-                        "BlendWeight": 20.0
-                    }
-                }
+        "VortexWeatherSelection": {
+            "Clearly": {
+                "BlendWeight": 80.0,
+                "WeatherDurationMin": 800.0
+            },
+            "Cloudy": {
+                "BlendWeight": 20.0
             }
         }
     }
+
+    Only the specified weather types and params are modified.
+    Everything else (files, weather types, params) stays unchanged.
     """
-    skip_files: list[str]
-    configs: dict[str, dict[str, Any]]
+    configs: dict[str, dict[str, dict[str, Any]]]
 
     @classmethod
     def from_dict(cls, data: dict) -> "PatchConfig":
         """Create PatchConfig from a dictionary."""
-        return cls(
-            skip_files=data.get("skip_files", []),
-            configs=data.get("configs", {}),
-        )
+        return cls(configs=data)
 
 
 def generate_config_output(config: ConfigData) -> str:
@@ -126,11 +113,6 @@ def apply_patches(
     patched_configs = []
 
     for config in configs:
-        # Check if this file should be skipped
-        if config.filename in patch_config.skip_files:
-            patched_configs.append(config)
-            continue
-
         # Check if there are patches for this config's SID
         if config.sid not in patch_config.configs:
             patched_configs.append(config)
@@ -138,22 +120,13 @@ def apply_patches(
 
         # Deep copy to avoid modifying original
         patched = copy.deepcopy(config)
-        config_patches = patch_config.configs[config.sid]
+        weather_patches = patch_config.configs[config.sid]
 
-        # Get weather types to skip
-        skip_weathers = config_patches.get("skip_weathers", [])
-
-        # Get weather patches
-        weather_patches = config_patches.get("weathers", {})
-
-        # Apply patches to each weather type
-        for weather_name, weather_data in patched.weather_types.items():
-            if weather_name in skip_weathers:
-                continue
-
-            if weather_name in weather_patches:
-                for param_name, param_value in weather_patches[weather_name].items():
-                    weather_data.params[param_name] = param_value
+        # Apply patches to specified weather types
+        for weather_name, param_patches in weather_patches.items():
+            if weather_name in patched.weather_types:
+                for param_name, param_value in param_patches.items():
+                    patched.weather_types[weather_name].params[param_name] = param_value
 
         patched_configs.append(patched)
 
@@ -207,6 +180,8 @@ def patch_and_generate(
 
     # Write to file if path provided
     if output_path:
+        # Ensure output directory exists
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         # Convert to CRLF line endings for the game
         combined_crlf = combined.replace("\n", "\r\n")
         output_path.write_text(combined_crlf)

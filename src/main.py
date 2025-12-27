@@ -45,9 +45,10 @@ def load_patch_from_json(json_path: Path) -> dict:
 if __name__ == "__main__":
     """Alternative entry point using JSON patch file."""
     src_dir = Path(__file__).parent
-    original_dir = src_dir / "config" / "original_chunked"
+    repo_root = src_dir.parent
+    original_dir = repo_root / "original_config_chunked"
     output_path = src_dir / "config" / "patched_combined.cfg"
-    patch_json = src_dir / "patches.json"
+    patch_json = src_dir / "config" / "patches.json"
 
     if not patch_json.exists():
         print(f"Error: Patch file not found: {patch_json}")

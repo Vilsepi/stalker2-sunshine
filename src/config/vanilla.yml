@@ -1,424 +1,4 @@
 
-Empty:
-  Clearly:
-    BlendWeight: 40.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Stormy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Rainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-
-# ??? This could refer to the tornado area or The Ribs where vortex artifacts are found
-VortexWeatherSelection:
-  Clearly:
-    BlendWeight: 40.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 60.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 2
-
-# Swamps
-SwampWeatherSelection:
-  Clearly:
-    BlendWeight: 30.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 30.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Chemical Plant
-Region_ChemicalPlant:
-  Clearly:
-    BlendWeight: 30.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Rainy:
-    BlendWeight: 30.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-
-# ??? a fan-made, large, industrial map in Stalker Anomaly?
-Region_PromZone:
-  Clearly:
-    BlendWeight: 30.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Cloudy:
-    BlendWeight: 25.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  LightRainy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Rainy:
-    BlendWeight: 25.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-
-# Wild Island
-Region_WildIsland:
-  Clearly:
-    BlendWeight: 30.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-  Stormy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  LightRainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Rainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
-
-# Yaniv
-YanovWeatherSelection:
-  Clearly:
-    BlendWeight: 35.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 300.0
-    WeatherDurationMax: 600.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 25.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Yantar
-YantarWeatherSelection:
-  Clearly:
-    BlendWeight: 25.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 30.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Cordon
-KordonWeatherSelection:
-  Clearly:
-    BlendWeight: 40.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Cooling Towers
-GradirniWeatherSelection:
-  Clearly:
-    BlendWeight: 30.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Cooling Tower Fire Whirl?
-Gradirni_FireBreath_WeatherSelection:
-  Clearly:
-    BlendWeight: 15.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Cloudy:
-    BlendWeight: 60.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 25.0
-    WeatherDurationMin: 300.0
-    WeatherDurationMax: 600.0
-    MaximumRepeatAmount: 1
-
-# Cement Factory
-CementPlantWeatherSelection:
-  Clearly:
-    BlendWeight: 30.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 25.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Jupiter
-JupiterWeatherSelection:
-  Clearly:
-    BlendWeight: 20.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 40.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Red Forest
-RedForestWeatherSelectionMain:
-  Clearly:
-    BlendWeight: 50.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 30.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
-# Red Forest
-RedForestWeatherSelectionSide:
-  Clearly:
-    BlendWeight: 40.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 1
-  LightRainy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 20.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-
-# Rostok
-RostokWeatherSelection:
-  Clearly:
-    BlendWeight: 45.0
-    WeatherDurationMin: 1000.0
-    WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 2
-  Cloudy:
-    BlendWeight: 10.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-  Stormy:
-    BlendWeight: 5.0
-    WeatherDurationMin: 200.0
-    WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
-  LightRainy:
-    BlendWeight: 15.0
-    WeatherDurationMin: 600.0
-    WeatherDurationMax: 1200.0
-    MaximumRepeatAmount: 1
-  Rainy:
-    BlendWeight: 25.0
-    WeatherDurationMin: 500.0
-    WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 2
-
 # Lesser Zone
 LesserZoneWeather:
   Clearly:
@@ -485,8 +65,8 @@ GarbageWeather:
     MaximumRepeatAmount: 2
     MaximumCooldownWeatherAmount: 1
 
-# Duga
-DugaRegionWeather:
+# Wild Island
+Region_WildIsland:
   Clearly:
     BlendWeight: 30.0
     WeatherDurationMin: 1000.0
@@ -494,7 +74,7 @@ DugaRegionWeather:
     MaximumRepeatAmount: 2
     MaximumCooldownWeatherAmount: 1
   Cloudy:
-    BlendWeight: 10.0
+    BlendWeight: 20.0
     WeatherDurationMin: 500.0
     WeatherDurationMax: 700.0
     MaximumRepeatAmount: 2
@@ -503,47 +83,48 @@ DugaRegionWeather:
     BlendWeight: 10.0
     WeatherDurationMin: 200.0
     WeatherDurationMax: 400.0
-    MaximumRepeatAmount: 2
+    MaximumRepeatAmount: 1
     MaximumCooldownWeatherAmount: 1
   LightRainy:
-    BlendWeight: 10.0
+    BlendWeight: 20.0
     WeatherDurationMin: 500.0
     WeatherDurationMax: 700.0
     MaximumRepeatAmount: 1
     MaximumCooldownWeatherAmount: 1
   Rainy:
-    BlendWeight: 40.0
+    BlendWeight: 20.0
     WeatherDurationMin: 500.0
     WeatherDurationMax: 700.0
     MaximumRepeatAmount: 2
     MaximumCooldownWeatherAmount: 1
 
-# Burnt Forest
-BurnForestRegionWeather:
+# Cordon
+KordonWeatherSelection:
   Clearly:
-    BlendWeight: 10.0
+    BlendWeight: 40.0
     WeatherDurationMin: 1000.0
     WeatherDurationMax: 1300.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
+    MaximumRepeatAmount: 2
   Cloudy:
-    BlendWeight: 5.0
+    BlendWeight: 15.0
     WeatherDurationMin: 500.0
     WeatherDurationMax: 700.0
-    MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
+    MaximumRepeatAmount: 2
   Stormy:
     BlendWeight: 5.0
     WeatherDurationMin: 200.0
     WeatherDurationMax: 400.0
     MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
+  LightRainy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
   Rainy:
-    BlendWeight: 50.0
+    BlendWeight: 20.0
     WeatherDurationMin: 500.0
     WeatherDurationMax: 700.0
     MaximumRepeatAmount: 2
-    MaximumCooldownWeatherAmount: 1
 
 # Zaton
 BackwaterWeatherSelection:
@@ -578,6 +159,149 @@ BackwaterWeatherSelection:
     MaximumRepeatAmount: 2
     MaximumCooldownWeatherAmount: 1
 
+# Swamps
+SwampWeatherSelection:
+  Clearly:
+    BlendWeight: 30.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+  Rainy:
+    BlendWeight: 30.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Chemical Plant
+Region_ChemicalPlant:
+  Clearly:
+    BlendWeight: 30.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Cloudy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Stormy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 30.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+
+# Rostok
+RostokWeatherSelection:
+  Clearly:
+    BlendWeight: 45.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
+    BlendWeight: 15.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+  Rainy:
+    BlendWeight: 25.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Burnt Forest
+BurnForestRegionWeather:
+  Clearly:
+    BlendWeight: 10.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Cloudy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Stormy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 50.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+
+# Duga
+DugaRegionWeather:
+  Clearly:
+    BlendWeight: 30.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Cloudy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Stormy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  LightRainy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 40.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+
 # Malachite
 MalahitWeatherSelection:
   Clearly:
@@ -606,32 +330,135 @@ MalahitWeatherSelection:
     WeatherDurationMax: 700.0
     MaximumRepeatAmount: 2
 
-# ???
-SQ10_NoEmission_Weather:
+# Yantar
+YantarWeatherSelection:
   Clearly:
+    BlendWeight: 25.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
     BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
+    BlendWeight: 15.0
     WeatherDurationMin: 600.0
     WeatherDurationMax: 1200.0
     MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Cloudy:
+  Rainy:
+    BlendWeight: 30.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Red Forest
+RedForestWeatherSelectionMain:
+  Clearly:
+    BlendWeight: 50.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
     BlendWeight: 30.0
     WeatherDurationMin: 600.0
     WeatherDurationMax: 1200.0
     MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
-  Stormy:
+  Rainy:
+    BlendWeight: 15.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Red Forest
+RedForestWeatherSelectionSide:
+  Clearly:
+    BlendWeight: 40.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
     BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+  Stormy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 1
+  LightRainy:
+    BlendWeight: 15.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+  Rainy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+
+# Yaniv
+YanovWeatherSelection:
+  Clearly:
+    BlendWeight: 35.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 5.0
     WeatherDurationMin: 300.0
     WeatherDurationMax: 600.0
     MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
   Rainy:
-    BlendWeight: 30.0
+    BlendWeight: 25.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Jupiter
+JupiterWeatherSelection:
+  Clearly:
+    BlendWeight: 20.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
+    BlendWeight: 20.0
     WeatherDurationMin: 600.0
     WeatherDurationMax: 1200.0
     MaximumRepeatAmount: 1
-    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 40.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
 
 # Prypiat
 Region_Prypiat:
@@ -665,3 +492,178 @@ Region_Prypiat:
     WeatherDurationMax: 700.0
     MaximumRepeatAmount: 2
     MaximumCooldownWeatherAmount: 1
+
+# Cement Factory
+CementPlantWeatherSelection:
+  Clearly:
+    BlendWeight: 30.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 25.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
+    BlendWeight: 15.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+  Rainy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Cooling Towers
+GradirniWeatherSelection:
+  Clearly:
+    BlendWeight: 30.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+  LightRainy:
+    BlendWeight: 10.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+  Rainy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+
+# Cooling Tower Fire Whirl?
+Gradirni_FireBreath_WeatherSelection:
+  Clearly:
+    BlendWeight: 15.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+  Cloudy:
+    BlendWeight: 60.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 2
+  Stormy:
+    BlendWeight: 25.0
+    WeatherDurationMin: 300.0
+    WeatherDurationMax: 600.0
+    MaximumRepeatAmount: 1
+
+
+# Default weather?
+Empty:
+  Clearly:
+    BlendWeight: 40.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Cloudy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Stormy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+
+# ??? Some story mission where emissions are blocked
+SQ10_NoEmission_Weather:
+  Clearly:
+    BlendWeight: 20.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Cloudy:
+    BlendWeight: 30.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Stormy:
+    BlendWeight: 20.0
+    WeatherDurationMin: 300.0
+    WeatherDurationMax: 600.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 30.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+
+# ??? "a fan-made, large, industrial map in Stalker Anomaly"?
+Region_PromZone:
+  Clearly:
+    BlendWeight: 30.0
+    WeatherDurationMin: 1000.0
+    WeatherDurationMax: 1300.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Cloudy:
+    BlendWeight: 25.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  Stormy:
+    BlendWeight: 5.0
+    WeatherDurationMin: 200.0
+    WeatherDurationMax: 400.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+  LightRainy:
+    BlendWeight: 15.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 1
+    MaximumCooldownWeatherAmount: 1
+  Rainy:
+    BlendWeight: 25.0
+    WeatherDurationMin: 500.0
+    WeatherDurationMax: 700.0
+    MaximumRepeatAmount: 2
+    MaximumCooldownWeatherAmount: 1
+
+# ??? This could refer to the tornado area or The Ribs where vortex artifacts are found
+VortexWeatherSelection:
+  Clearly:
+    BlendWeight: 40.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 2
+  Cloudy:
+    BlendWeight: 60.0
+    WeatherDurationMin: 600.0
+    WeatherDurationMax: 1200.0
+    MaximumRepeatAmount: 2

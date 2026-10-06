@@ -10,6 +10,12 @@ The mod is a `bpatch` file that only changes the weather weights it needs to, on
 
 Everything else in that file is kept as-is, so the mod keeps working when the game is updated, and only conflicts with other mods that change the same weather weights.
 
+## Prerequisites
+
+- Python 3
+- Latest original [config files](https://www.nexusmods.com/stalker2heartofchornobyl/mods/1653)
+- [repak](https://github.com/trumank/repak)
+
 ## Usage
 
 A variant is a YAML file in `src/config/` (e.g. `sunnier.yml`). It multiplies each region's vanilla weights per weather type, with optional exact overrides per region. See `src/cfg_patcher.py` for the format.
@@ -40,9 +46,13 @@ The `.pak` name must end in `_P.pak` for the game to load it.
 
 The game config can be extracted with [FModel](https://fmodel.app/), or downloaded from config dumps on Nexus Mods.
 
-Run the tests (tests that need the original game config are skipped without it):
+Run all tests. The tests in `tests/test_game_config.py` need the original game config, and are skipped without it:
 
     ./tests/test.sh
+
+Run only the unit tests that don't need the original game config (these also run on GitHub Actions):
+
+    ./tests/test.sh unit
 
 To view a weather config as a table:
 
@@ -50,8 +60,8 @@ To view a weather config as a table:
 
 ## Weather mods by other authors
 
-There is already a bunch of existing weather mods, but none of them did what I wanted.
+There already exists several weather mods, but none of them did what I wanted.
 
 - [Sunny Weather](https://www.nexusmods.com/stalker2heartofchornobyl/mods/296): This mod was my original inspiration. However, it forces nearly 100% clear weather everywhere, so it simplifies the game's weather too much.
-- [Less Pleasant Weather 2](https://www.nexusmods.com/stalker2heartofchornobyl/mods/1555): This felt promising, but it uses an old version of the WeatherSelectionPrototypes.cfg as a base, so it is completely missing some weather config for the game.
+- [Less Pleasant Weather 4](https://www.nexusmods.com/stalker2heartofchornobyl/mods/1555): Uses config file from an older game version, and does not use [bpatch](https://zonekit-support.stalker2.com/hc/en-us/articles/39357395461265-Config-patches) method.
 - [Dynamic Weather Overhaul](https://www.nexusmods.com/stalker2heartofchornobyl/mods/164): Completely reworks the weather to be even more dramatic, and for example makes nights even darker.

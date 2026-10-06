@@ -1,41 +1,12 @@
 #!/usr/bin/env python3
-"""Tests for the weather patcher. Tests that need the original game config are skipped if it's missing."""
+"""Unit tests that don't need the original game config files."""
 
-import sys
 import unittest
-from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "src"))
+from helpers import load_yaml
 
-import yaml  # noqa: E402
-
-from cfg_parser import Struct, format_value, load_weather_selections, merge, parse_cfg_text, parse_value  # noqa: E402
-from cfg_patcher import build_variant, diff_weathers, generate_bpatch  # noqa: E402
-from cfg_to_yml import DEFAULT_CFG, DEFAULT_OUTPUT, generate_yml  # noqa: E402
-
-CONFIG_DIR = REPO_ROOT / "src" / "config"
-HAS_ORIGINAL = DEFAULT_CFG.is_file()
-
-
-def load_yaml(name: str) -> dict:
-    return yaml.safe_load((CONFIG_DIR / name).read_text()) or {}
-
-
-def apply_bpatch(original: dict[str, Struct], patch_text: str) -> dict[str, Struct]:
-    """Simulate the game applying a bpatch file. Fails on keys that don't exist in the original."""
-    result = dict(original)
-    for patch in parse_cfg_text(patch_text):
-        assert patch.options == "bpatch", f"{patch.key} is missing {{bpatch}}"
-        assert patch.key in original, f"Unknown SID {patch.key}"
-        for weather_name, weather in patch.structs().items():
-            assert weather.options == "bpatch", f"{patch.key}.{weather_name} is missing {{bpatch}}"
-            target = original[patch.key].structs()
-            assert weather_name in target, f"Unknown weather {patch.key}.{weather_name}"
-            for param in weather.items:
-                assert param in target[weather_name].items, f"Unknown param {patch.key}.{weather_name}.{param}"
-        result[patch.key] = merge(original[patch.key], patch)
-    return result
+from cfg_parser import format_value, parse_cfg_text, parse_value
+from cfg_patcher import build_variant, diff_weathers, generate_bpatch
 
 
 class TestValues(unittest.TestCase):
@@ -53,6 +24,37 @@ class TestValues(unittest.TestCase):
         self.assertEqual(format_value(12.5), "12.5f")
         self.assertEqual(format_value(2), "2")
         self.assertEqual(format_value(False), "false")
+
+
+class TestParser(unittest.TestCase):
+    def test_parses_any_param_order_and_inheritance(self):
+        roots = parse_cfg_text(
+            "[0] : struct.begin\n"
+            "   SID = Base\n"
+            "   Clearly : struct.begin\n"
+            "      BlendWeight = 40.f\n"
+            "      MaximumRepeatAmount = 1\n"
+            "   struct.end\n"
+            "struct.end\n"
+            "Child : struct.begin {refkey=[0]}\n"
+            "   Clearly : struct.begin\n"
+            "      MaximumRepeatAmount = 2\n"
+            "      BlendWeight = 20.0\n"
+            "   struct.end\n"
+            "   SID = Child\n"
+            "   Priority = 5\n"
+            "struct.end\n"
+        )
+        self.assertEqual([r.sid for r in roots], ["Base", "Child"])
+        self.assertEqual(roots[1].refkey, "[0]")
+        self.assertEqual(roots[1].items["Priority"], 5)
+        self.assertEqual(roots[1].structs()["Clearly"].items, {"MaximumRepeatAmount": 2, "BlendWeight": 20.0})
+
+    def test_rejects_unknown_syntax(self):
+        with self.assertRaises(ValueError):
+            parse_cfg_text("Foo : struct.begin\n   not valid\nstruct.end\n")
+        with self.assertRaises(ValueError):
+            parse_cfg_text("Foo : struct.begin\n")
 
 
 class TestVariant(unittest.TestCase):
@@ -111,40 +113,18 @@ class TestVariant(unittest.TestCase):
             self.assertGreater(share_after, share_before, sid)
 
 
-@unittest.skipUnless(HAS_ORIGINAL, f"Original game config not found: {DEFAULT_CFG}")
-class TestAgainstOriginal(unittest.TestCase):
-    def setUp(self):
-        self.original = load_weather_selections(DEFAULT_CFG)
-        self.vanilla = load_yaml("vanilla.yml")
+class TestBpatch(unittest.TestCase):
+    def test_sunnier_bpatch_syntax(self):
+        vanilla = load_yaml("vanilla.yml")
+        changes = diff_weathers(vanilla, build_variant(vanilla, load_yaml("sunnier.yml")))
+        patches = parse_cfg_text(generate_bpatch(changes))
 
-    def test_parses_all_regions(self):
-        self.assertEqual(len(self.original), 45)
-        for sid, region in self.original.items():
-            self.assertIn("Clearly", region.structs(), sid)
-
-    def test_vanilla_yml_is_up_to_date(self):
-        self.assertEqual(DEFAULT_OUTPUT.read_text(), generate_yml(DEFAULT_CFG),
-                         "vanilla.yml is out of date, run: python3 src/cfg_to_yml.py")
-
-    def test_sunnier_bpatch_applies_to_original(self):
-        variant = build_variant(self.vanilla, load_yaml("sunnier.yml"))
-        patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
-        patched = apply_bpatch(self.original, patch_text)
-
-        for sid, weathers in variant.items():
-            region = patched[sid].structs()
-            for weather_name, params in weathers.items():
-                for param, value in params.items():
-                    self.assertEqual(region[weather_name].items[param], value, f"{sid}.{weather_name}.{param}")
-            total = sum(w.items["BlendWeight"] for w in region.values())
-            self.assertGreater(total, 0, sid)
-
-    def test_bpatch_only_contains_changed_values(self):
-        variant = build_variant(self.vanilla, load_yaml("test.yml"))
-        patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
-        patched = apply_bpatch(self.original, patch_text)
-        for sid in set(self.original) - {"YanovWeatherSelection", "RostokWeatherSelection"}:
-            self.assertIs(patched[sid], self.original[sid])
+        self.assertEqual([p.key for p in patches], list(changes))
+        for patch in patches:
+            self.assertEqual(patch.options, "bpatch", patch.key)
+            for weather_name, weather in patch.structs().items():
+                self.assertEqual(weather.options, "bpatch", f"{patch.key}.{weather_name}")
+                self.assertEqual(weather.items, changes[patch.key][weather_name])
 
 
 if __name__ == "__main__":

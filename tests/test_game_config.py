@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""Tests against the original game config files. Skipped if they are missing (see README)."""
+
+import unittest
+
+from helpers import load_yaml
+
+from cfg_parser import Struct, load_weather_selections, merge, parse_cfg_text
+from cfg_patcher import build_variant, diff_weathers, generate_bpatch
+from cfg_to_yml import DEFAULT_CFG, DEFAULT_OUTPUT, generate_yml
+
+
+def apply_bpatch(original: dict[str, Struct], patch_text: str) -> dict[str, Struct]:
+    """Simulate the game applying a bpatch file. Fails on keys that don't exist in the original."""
+    result = dict(original)
+    for patch in parse_cfg_text(patch_text):
+        assert patch.options == "bpatch", f"{patch.key} is missing {{bpatch}}"
+        assert patch.key in original, f"Unknown SID {patch.key}"
+        for weather_name, weather in patch.structs().items():
+            assert weather.options == "bpatch", f"{patch.key}.{weather_name} is missing {{bpatch}}"
+            target = original[patch.key].structs()
+            assert weather_name in target, f"Unknown weather {patch.key}.{weather_name}"
+            for param in weather.items:
+                assert param in target[weather_name].items, f"Unknown param {patch.key}.{weather_name}.{param}"
+        result[patch.key] = merge(original[patch.key], patch)
+    return result
+
+
+@unittest.skipUnless(DEFAULT_CFG.is_file(), f"Original game config not found: {DEFAULT_CFG}")
+class TestAgainstOriginal(unittest.TestCase):
+    def setUp(self):
+        self.original = load_weather_selections(DEFAULT_CFG)
+        self.vanilla = load_yaml("vanilla.yml")
+
+    def test_parses_all_regions(self):
+        self.assertEqual(len(self.original), 45)
+        for sid, region in self.original.items():
+            self.assertIn("Clearly", region.structs(), sid)
+
+    def test_vanilla_yml_is_up_to_date(self):
+        self.assertEqual(DEFAULT_OUTPUT.read_text(), generate_yml(DEFAULT_CFG),
+                         "vanilla.yml is out of date, run: python3 src/cfg_to_yml.py")
+
+    def test_sunnier_bpatch_applies_to_original(self):
+        variant = build_variant(self.vanilla, load_yaml("sunnier.yml"))
+        patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
+        patched = apply_bpatch(self.original, patch_text)
+
+        for sid, weathers in variant.items():
+            region = patched[sid].structs()
+            for weather_name, params in weathers.items():
+                for param, value in params.items():
+                    self.assertEqual(region[weather_name].items[param], value, f"{sid}.{weather_name}.{param}")
+            total = sum(w.items["BlendWeight"] for w in region.values())
+            self.assertGreater(total, 0, sid)
+
+    def test_bpatch_only_contains_changed_values(self):
+        variant = build_variant(self.vanilla, load_yaml("test.yml"))
+        patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
+        patched = apply_bpatch(self.original, patch_text)
+        for sid in set(self.original) - {"YanovWeatherSelection", "RostokWeatherSelection"}:
+            self.assertIs(patched[sid], self.original[sid])
+
+
+if __name__ == "__main__":
+    unittest.main()

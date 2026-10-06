@@ -2,36 +2,51 @@
 
 A tunable mod for Stalker 2 to improve the always lousy weather.
 
-This mod only modifies the following file:
+Built for game version 2.0.5/2.0.6 (base game only, the DLC's weather is not changed).
 
-`Stalker2\Content\GameLite\GameData\WeatherSelectionPrototypes.cfg`
+The mod is a `bpatch` file that only changes the weather weights it needs to, on top of the game's own:
+
+`Stalker2/Content/GameLite/GameData/WeatherSelectionPrototypes.cfg`
+
+Everything else in that file is kept as-is, so the mod keeps working when the game is updated, and only conflicts with other mods that change the same weather weights.
 
 ## Usage
 
-Create a patch file in YAML format in `src/config/` directory (e.g., `test.yml`).
+A variant is a YAML file in `src/config/` (e.g. `sunnier.yml`). It multiplies each region's vanilla weights per weather type, with optional exact overrides per region. See `src/cfg_patcher.py` for the format.
 
-Run the patcher:
+Generate the mod and pack it into `dist/Sunshine_P.pak`:
 
-    cd src
-    python3 main.py test.yml
+    ./package.sh sunnier.yml
+
+This prints a table of each region's weather chances, vanilla vs. the variant. Copy the `.pak` under `Game folder\Stalker2\Content\Paks\~mods`.
+
+Packing needs [repak](https://github.com/trumank/repak). To only generate the patch file without packing:
+
+    python3 src/main.py sunnier.yml
+
+The generated directory structure is:
+
+    dist/Sunshine_P/Stalker2/Content/GameLite/GameData/WeatherSelectionPrototypes/WeatherSelectionPrototypes_patch_Sunshine.cfg
+
+The `.pak` name must end in `_P.pak` for the game to load it.
 
 ## Development
 
-Convert all line endings to CRLF Windows line endings which the game uses:
+`src/config/vanilla.yml` is a readable snapshot of the game's weather config, and the base for all variants. To update it after a game patch, place the game's config under `original_config/` (not committed to git) and regenerate:
 
-    sed -i 's/$/\r/' src/config/original_chunked/*.cfg
+    original_config/v2.0.5/GameData/WeatherSelectionPrototypes.cfg
 
-## Packaging
+    python3 src/cfg_to_yml.py
 
-Use [repak](https://github.com/trumank/repak) to package the config file into a `.pak`, and copy it under `Game folder\Stalker2\Content\Paks\~mods`.
+The game config can be extracted with [FModel](https://fmodel.app/), or downloaded from config dumps on Nexus Mods.
 
-This will conflict with any other mod that modifies `WeatherSelectionPrototypes.cfg`.
+Run the tests (tests that need the original game config are skipped without it):
 
-You should make a directory structure `sunshine\Stalker2\Content\GameLite\GameData\WeatherSelectionPrototypes.cfg`.
+    ./tests/test.sh
 
-Then:
+To view a weather config as a table:
 
-    repak pack sunshine sunshine.pak
+    python3 src/yml_to_csv.py src/config/vanilla.yml
 
 ## Weather mods by other authors
 

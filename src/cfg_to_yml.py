@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
-Generates a YAML config from STALKER 2 .cfg weather configuration files.
-Uses cfg_parser to read the files and outputs a filtered subset of parameters.
+Generates vanilla.yml from the game's WeatherSelectionPrototypes.cfg.
+
+Only the regions in REGIONS are included, in that order, with their comments.
+Weather types with BlendWeight 0 are omitted.
+
+Usage: python3 cfg_to_yml.py [path/to/WeatherSelectionPrototypes.cfg] [output.yml]
 """
 
 import sys
@@ -9,14 +13,17 @@ from pathlib import Path
 
 import yaml
 
-from cfg_parser import parse_all_configs, ConfigData
+from cfg_parser import Struct, load_weather_selections
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_CFG = REPO_ROOT / "original_config" / "v2.0.5" / "GameData" / "WeatherSelectionPrototypes.cfg"
+DEFAULT_OUTPUT = REPO_ROOT / "src" / "config" / "vanilla.yml"
 
 # Weather types to include in output
-INCLUDED_WEATHERS = {"Clearly", "Cloudy", "Stormy", "LightRainy", "Rainy"}
+WEATHER_TYPES = ["Clearly", "Cloudy", "Fogy", "Stormy", "LightRainy", "Rainy"]
 
 # Parameters to include in output (in order)
-INCLUDED_PARAMS = [
+PARAMETERS = [
     "BlendWeight",
     "WeatherDurationMin",
     "WeatherDurationMax",
@@ -24,89 +31,69 @@ INCLUDED_PARAMS = [
     "MaximumCooldownWeatherAmount",
 ]
 
+# SID -> comment, in rough order on the map
+REGIONS = {
+    "LesserZoneWeather": "Lesser Zone",
+    "GarbageWeather": "Garbage",
+    "Region_WildIsland": "Wild Island",
+    "KordonWeatherSelection": "Cordon",
+    "BackwaterWeatherSelection": "Zaton",
+    "SwampWeatherSelection": "Swamps",
+    "Region_ChemicalPlant": "Chemical Plant",
+    "RostokWeatherSelection": "Rostok",
+    "BurnForestRegionWeather": "Burnt Forest",
+    "DugaRegionWeather": "Duga",
+    "MalahitWeatherSelection": "Malachite",
+    "YantarWeatherSelection": "Yantar",
+    "RedForestWeatherSelectionMain": "Red Forest",
+    "RedForestWeatherSelectionSide": "Red Forest",
+    "YanovWeatherSelection": "Yaniv",
+    "JupiterWeatherSelection": "Jupiter",
+    "Region_Prypiat": "Prypiat",
+    "CementPlantWeatherSelection": "Cement Factory",
+    "GradirniWeatherSelection": "Cooling Towers",
+    "Gradirni_FireBreath_WeatherSelection": "The Fire Whirl in the North Cooling Tower",
+    "Empty": "Default weather?",
+    "SQ10_NoEmission_Weather": "The Wild Island side quest Shift Change",
+    "Region_PromZone": '"Promzona" (Industrial Zone), a sub-area of the Chemical Plant region',
+    "VortexWeatherSelection": "The Tornado in western Yaniv",
+}
 
-def config_to_dict(config: ConfigData) -> dict | None:
-    """
-    Convert a ConfigData object to a filtered dictionary for YAML output.
 
-    Returns None if no weather types pass the filter.
-    """
-    weather_dict = {}
-
-    for weather_name in config.weather_order:
-        # Skip weather types not in our include list
-        if weather_name not in INCLUDED_WEATHERS:
+def region_to_dict(region: Struct) -> dict:
+    """Convert a resolved weather selection into {weather: {param: value}}, skipping zero weights."""
+    weathers = {}
+    for weather_name in WEATHER_TYPES:
+        weather = region.structs().get(weather_name)
+        if weather is None or not weather.items.get("BlendWeight"):
             continue
-
-        weather_data = config.weather_types[weather_name]
-
-        # Skip if BlendWeight is 0
-        blend_weight = weather_data.params.get("BlendWeight", 0)
-        if blend_weight == 0 or blend_weight == 0.0:
-            continue
-
-        # Build filtered params dict
-        params = {}
-        for param_name in INCLUDED_PARAMS:
-            if param_name not in weather_data.params:
-                continue
-
-            value = weather_data.params[param_name]
-
-            # Skip MaximumCooldownWeatherAmount if it's 0
-            if param_name == "MaximumCooldownWeatherAmount" and value == 0:
-                continue
-
-            params[param_name] = value
-
-        if params:
-            weather_dict[weather_name] = params
-
-    return weather_dict if weather_dict else None
+        params = {p: weather.items[p] for p in PARAMETERS if p in weather.items}
+        if params.get("MaximumCooldownWeatherAmount") == 0:
+            del params["MaximumCooldownWeatherAmount"]
+        weathers[weather_name] = params
+    return weathers
 
 
-def generate_yml(config_dir: Path) -> str:
-    """
-    Generate YAML content from all .cfg files in the given directory.
-
-    Args:
-        config_dir: Path to directory containing .cfg files
-
-    Returns:
-        YAML formatted string
-    """
-    configs = parse_all_configs(config_dir)
-
-    output = {}
-    for config in configs:
-        config_dict = config_to_dict(config)
-        if config_dict:
-            output[config.sid] = config_dict
-
-    # Use default_flow_style=False for readable multi-line output
-    return yaml.dump(output, default_flow_style=False, sort_keys=False, allow_unicode=True)
+def generate_yml(cfg_path: Path) -> str:
+    """Generate vanilla.yml content from the game's WeatherSelectionPrototypes.cfg."""
+    regions = load_weather_selections(cfg_path)
+    parts = [f"# Generated by cfg_to_yml.py from {cfg_path.parent.parent.name}/{cfg_path.parent.name}/{cfg_path.name}\n"]
+    for sid, comment in REGIONS.items():
+        body = yaml.dump({sid: region_to_dict(regions[sid])}, default_flow_style=False, sort_keys=False)
+        parts.append(f"# {comment}\n{body}")
+    return "\n".join(parts)
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python cfg_to_yml.py <config_directory> [output_file]")
-        print("Example: python cfg_to_yml.py ../original_config_chunked output.yml")
+    cfg_path = Path(sys.argv[1]) if len(sys.argv) >= 2 else DEFAULT_CFG
+    output_path = Path(sys.argv[2]) if len(sys.argv) >= 3 else DEFAULT_OUTPUT
+
+    if not cfg_path.is_file():
+        print(f"Error: {cfg_path} not found. See README for where to get the original game config.")
         sys.exit(1)
 
-    config_dir = Path(sys.argv[1])
-
-    if not config_dir.is_dir():
-        print(f"Error: {config_dir} is not a directory")
-        sys.exit(1)
-
-    yml_content = generate_yml(config_dir)
-
-    if len(sys.argv) >= 3:
-        output_file = Path(sys.argv[2])
-        output_file.write_text(yml_content)
-        print(f"Written to {output_file}")
-    else:
-        print(yml_content)
+    output_path.write_text(generate_yml(cfg_path))
+    print(f"Written to {output_path}")
 
 
 if __name__ == "__main__":

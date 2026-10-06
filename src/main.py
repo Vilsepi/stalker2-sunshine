@@ -2,62 +2,80 @@
 """
 STALKER 2 Weather Config Patcher
 
-Main entry point for generating patched weather configuration files.
-Usage: python main.py <patch_file.yml>
+Builds a weather variant on top of vanilla.yml and writes it as a bpatch file
+into the mod's directory structure, ready to be packed with repak.
+
+Usage: python3 main.py <variant.yml>
 """
 
 import argparse
+import shutil
 import sys
 from pathlib import Path
+
 import yaml
 
-from cfg_patcher import patch_and_generate
+from cfg_patcher import build_variant, diff_weathers, generate_bpatch, write_cfg
 
 # Available parameters:
 #   BlendWeight (float): Selection probability weight
-#   BlendWeightIncrease (float): Weight increase over time
 #   WeatherDurationMin (float): Minimum duration in seconds
 #   WeatherDurationMax (float): Maximum duration in seconds
-#   MaximumRepeatAmount (int): Max consecutive occurrences (-1 = unlimited)
+#   MaximumRepeatAmount (int): Max consecutive occurrences
 #   MaximumCooldownWeatherAmount (int): Cooldown in weather cycles
 
+SRC_DIR = Path(__file__).resolve().parent
+CONFIG_DIR = SRC_DIR / "config"
+DIST_DIR = SRC_DIR.parent / "dist"
+MOD_NAME = "Sunshine"
+PATCH_PATH = Path("Stalker2/Content/GameLite/GameData/WeatherSelectionPrototypes") / f"WeatherSelectionPrototypes_patch_{MOD_NAME}.cfg"
 
-def load_patch_from_yaml(yaml_path: Path) -> dict:
-    """
-    Load patch configuration from a YAML file.
+TABLE_WEATHERS = ["Clearly", "Cloudy", "Fogy", "Stormy", "LightRainy", "Rainy"]
 
-    Args:
-        yaml_path: Path to the YAML file
 
-    Returns:
-        Patch configuration dictionary
-    """
-    with open(yaml_path) as f:
-        return yaml.safe_load(f)
+def load_yaml(path: Path) -> dict:
+    with open(path) as f:
+        return yaml.safe_load(f) or {}
+
+
+def shares(weathers: dict) -> dict[str, float]:
+    """Selection probability (%) of each weather type, from BlendWeights."""
+    weights = {w: weathers.get(w, {}).get("BlendWeight", 0) for w in TABLE_WEATHERS}
+    total = sum(weights.values())
+    return {w: 100 * v / total if total else 0 for w, v in weights.items()}
+
+
+def print_table(vanilla: dict, variant: dict) -> None:
+    """Print selection probabilities per region, vanilla -> variant."""
+    print(f"\n{'Selection chance %, vanilla -> variant':40}" + "".join(f"{w:>12}" for w in TABLE_WEATHERS))
+    for sid in vanilla:
+        before, after = shares(vanilla[sid]), shares(variant[sid])
+        cells = "".join(
+            f"{before[w]:>5.0f} ->{after[w]:>3.0f}" if before[w] != after[w] else f"{before[w]:>12.0f}"
+            for w in TABLE_WEATHERS
+        )
+        print(f"{sid:40}{cells}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Generate patched weather configuration files for STALKER 2"
-    )
-    parser.add_argument(
-        "patch_file",
-        help="Name of the patch YAML file in the config directory (e.g., patches.yml)",
-    )
+    parser = argparse.ArgumentParser(description="Generate a bpatch weather mod for STALKER 2")
+    parser.add_argument("variant_file", help="Name of the variant YAML file in src/config (e.g. sunnier.yml)")
     args = parser.parse_args()
 
-    src_dir = Path(__file__).parent
-    repo_root = src_dir.parent
-    original_dir = repo_root / "original_config_chunked"
-    output_path = repo_root / "dist" / "output.cfg"
-    patch_yaml = src_dir / "config" / args.patch_file
-
-    if not patch_yaml.exists():
-        print(f"Error: Patch file not found: {patch_yaml}")
+    variant_path = CONFIG_DIR / args.variant_file
+    if not variant_path.exists():
+        print(f"Error: Variant file not found: {variant_path}")
         sys.exit(1)
 
-    patch_config = load_patch_from_yaml(patch_yaml)
-    result = patch_and_generate(original_dir, patch_config, output_path)
+    vanilla = load_yaml(CONFIG_DIR / "vanilla.yml")
+    variant = build_variant(vanilla, load_yaml(variant_path))
+    changes = diff_weathers(vanilla, variant)
 
-    print(f"\nGenerated {len(result.splitlines())} lines of config")
+    mod_dir = DIST_DIR / f"{MOD_NAME}_P"
+    shutil.rmtree(mod_dir, ignore_errors=True)
+    output_path = mod_dir / PATCH_PATH
+    write_cfg(generate_bpatch(changes), output_path)
+
+    print_table(vanilla, variant)
+    print(f"\nPatched {len(changes)} regions")
     print(f"Output saved to: {output_path}")

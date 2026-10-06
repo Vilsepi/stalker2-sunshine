@@ -10,6 +10,6 @@
 
 # Reference files
 
-Never edit any `.cfg` files as they represent the original source truth of the game.
+Never edit any `.cfg` files under `original_config*`, as they represent the original configuration files of the game.
 
-Do not attempt to read `original_config/WeatherSelectionPrototypes.cfg` as it is huge.
+The original game files have numerous typos, including "Clearly", "Fogy". Use the same keys exactly as is.

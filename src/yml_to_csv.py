@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""A helper script to view the yml weather data as a single glance table."""
+"""A helper script to view vanilla.yml weather data as a single glance table."""
 
 import sys
 import yaml
 
 # All possible weather types and parameters
-WEATHER_TYPES = ["Clearly", "Cloudy", "Stormy", "LightRainy", "Rainy"]
+WEATHER_TYPES = ["Clearly", "Cloudy", "Fogy", "Stormy", "LightRainy", "Rainy"]
 PARAMETERS = ["BlendWeight", "WeatherDurationMin", "WeatherDurationMax", "MaximumRepeatAmount", "MaximumCooldownWeatherAmount"]
 
 

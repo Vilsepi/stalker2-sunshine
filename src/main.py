@@ -16,6 +16,7 @@ from pathlib import Path
 import yaml
 
 from cfg_patcher import build_variant, diff_weathers, generate_bpatch, write_cfg
+from cfg_to_yml import REGIONS
 
 # Available parameters:
 #   BlendWeight (float): Selection probability weight
@@ -45,17 +46,22 @@ def shares(weathers: dict) -> dict[str, float]:
     return {w: 100 * v / total if total else 0 for w, v in weights.items()}
 
 
+def region_label(sid: str) -> str:
+    """Area description followed by the region's SID, e.g. "Cordon (KordonWeatherSelection)"."""
+    return f"{REGIONS[sid]} ({sid})" if sid in REGIONS else sid
+
+
 def print_table(vanilla: dict, variant: dict) -> None:
     """Print selection probabilities per region, vanilla -> variant."""
-    print(f"\n{'Selection chance %, vanilla -> variant':40}" + "".join(f"{w:>12}" for w in TABLE_WEATHERS))
+    width = max(len(region_label(sid)) for sid in vanilla) + 2
+    print(f"\n{'Selection chance %, vanilla -> variant':{width}}" + "".join(f"{w:>12}" for w in TABLE_WEATHERS))
     for sid in vanilla:
         before, after = shares(vanilla[sid]), shares(variant[sid])
         cells = "".join(
             f"{before[w]:>5.0f} ->{after[w]:>3.0f}" if before[w] != after[w] else f"{before[w]:>12.0f}"
             for w in TABLE_WEATHERS
         )
-        print(f"{sid:40}{cells}")
-
+        print(f"{region_label(sid):{width}}{cells}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a bpatch weather mod for STALKER 2")

@@ -65,14 +65,20 @@ class TestVariant(unittest.TestCase):
         variant = build_variant(self.vanilla, {})
         self.assertEqual(diff_weathers(self.vanilla, variant), {})
 
-    def test_overrides_only_change_given_values(self):
-        variant = build_variant(self.vanilla, load_yaml("test.yml"))
-        changes = diff_weathers(self.vanilla, variant)
-        self.assertEqual(changes["RostokWeatherSelection"], {
-            "Clearly": {"BlendWeight": 45.0},
-            "LightRainy": {"BlendWeight": 15.0},
-        })
-        self.assertEqual(set(changes), {"YanovWeatherSelection", "RostokWeatherSelection"})
+    def test_sunnier_only_changes_blend_weights(self):
+        changes = diff_weathers(self.vanilla, build_variant(self.vanilla, load_yaml("sunnier.yml")))
+        self.assertTrue(changes)
+        for sid, weathers in changes.items():
+            for weather_name, params in weathers.items():
+                self.assertEqual(set(params), {"BlendWeight"}, f"{sid}.{weather_name}")
+
+    def test_overrides_apply_on_top_of_multipliers(self):
+        variant_config = load_yaml("sunnier.yml")
+        expected = build_variant(self.vanilla, variant_config)
+        expected["RostokWeatherSelection"]["Clearly"]["BlendWeight"] = 99.0
+
+        variant_config["overrides"] = {"RostokWeatherSelection": {"Clearly": {"BlendWeight": 99.0}}}
+        self.assertEqual(build_variant(self.vanilla, variant_config), expected)
 
     def test_excluded_regions_are_unchanged(self):
         variant_config = load_yaml("sunnier.yml")

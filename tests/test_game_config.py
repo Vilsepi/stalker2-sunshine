@@ -58,13 +58,20 @@ class TestAgainstOriginal(unittest.TestCase):
                     total = sum(w.items["BlendWeight"] for w in region.values())
                     self.assertGreater(total, 0, sid)
 
-    def test_bpatch_only_contains_changed_values(self):
-        variant = build_variant(self.vanilla, load_yaml("test.yml"))
-        patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
-        patched = apply_bpatch(self.original, patch_text)
-        for sid in set(self.original) - {"YanovWeatherSelection", "RostokWeatherSelection"}:
-            self.assertIs(patched[sid], self.original[sid])
+    def test_bpatch_only_changes_patched_values(self):
+        changes = diff_weathers(self.vanilla, build_variant(self.vanilla, load_yaml("sunnier.yml")))
+        patched = apply_bpatch(self.original, generate_bpatch(changes))
 
+        for sid, original in self.original.items():
+            if sid not in changes:
+                self.assertIs(patched[sid], original, sid)
+                continue
+            for weather_name, weather in original.structs().items():
+                patched_params = changes[sid].get(weather_name, {})
+                for param, value in weather.items.items():
+                    if param not in patched_params:
+                        self.assertEqual(patched[sid].structs()[weather_name].items[param], value,
+                                         f"{sid}.{weather_name}.{param}")
 
 if __name__ == "__main__":
     unittest.main()

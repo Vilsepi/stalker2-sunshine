@@ -12,3 +12,4 @@ import yaml  # noqa: E402
 
 def load_yaml(name: str) -> dict:
     return yaml.safe_load((CONFIG_DIR / name).read_text()) or {}
+

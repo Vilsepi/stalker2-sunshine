@@ -59,12 +59,14 @@ def print_table(vanilla: dict, variant: dict) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a bpatch weather mod for STALKER 2")
-    parser.add_argument("variant_file", help="Name of the variant YAML file in src/config (e.g. sunnier.yml)")
+    parser.add_argument("variant_file", help="Variant YAML file: a path, or a name in src/config (e.g. sunnier.yml)")
     args = parser.parse_args()
 
-    variant_path = CONFIG_DIR / args.variant_file
-    if not variant_path.exists():
-        print(f"Error: Variant file not found: {variant_path}")
+    variant_path = Path(args.variant_file)
+    if not variant_path.is_file():
+        variant_path = CONFIG_DIR / args.variant_file
+    if not variant_path.is_file():
+        print(f"Error: Variant file not found: {args.variant_file} (also looked in {CONFIG_DIR})")
         sys.exit(1)
 
     vanilla = load_yaml(CONFIG_DIR / "vanilla.yml")

@@ -1,11 +1,15 @@
 #!/bin/bash
 # Generate the bpatch for a variant and pack it into a .pak with repak.
-# Usage: ./package.sh [variant.yml]   (default: sunnier.yml)
+# Usage: ./package.sh [variant.yml]   (a path, or a name in src/config. Default: sunnier.yml)
 set -e
 
-cd "$(dirname "$0")"
-
 VARIANT="${1:-sunnier.yml}"
+# Resolve a path relative to the current directory before changing directory
+if [ -f "$VARIANT" ]; then
+    VARIANT="$(realpath "$VARIANT")"
+fi
+
+cd "$(dirname "$0")"
 MOD_DIR="dist/Sunshine_P"
 
 python3 src/main.py "$VARIANT"

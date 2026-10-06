@@ -1,0 +1,96 @@
+# Debug variant for verifying in-game that the mod is loaded and applied.
+#
+# Each region below gets a 100% chance for one weather type, with short durations
+# so that the region re-selects its weather every 1-2 minutes. The weather that is
+# active when you load a save still runs out its own duration first.
+#
+# Unlimited repeats (-1) and no cooldown, like the game's own forced weather.
+
+overrides:
+
+  # Lesser Zone: 100% Clearly
+  LesserZoneWeather:
+    Cloudy:
+      BlendWeight: 0.0
+    Fogy:
+      BlendWeight: 0.0
+    LightRainy:
+      BlendWeight: 0.0
+    Rainy:
+      BlendWeight: 0.0
+    Clearly:
+      BlendWeight: 100.0
+      WeatherDurationMin: 60.0
+      WeatherDurationMax: 120.0
+      MaximumRepeatAmount: -1
+      MaximumCooldownWeatherAmount: 0
+
+  # Chemical Plant: 100% Fogy
+  Region_ChemicalPlant:
+    Clearly:
+      BlendWeight: 0.0
+    Cloudy:
+      BlendWeight: 0.0
+    LightRainy:
+      BlendWeight: 0.0
+    Rainy:
+      BlendWeight: 0.0
+    Fogy:
+      BlendWeight: 100.0
+      WeatherDurationMin: 60.0
+      WeatherDurationMax: 120.0
+      MaximumRepeatAmount: -1
+      MaximumCooldownWeatherAmount: 0
+
+  # Burnt Forest: 100% LightRainy
+  BurnForestRegionWeather:
+    Clearly:
+      BlendWeight: 0.0
+    Cloudy:
+      BlendWeight: 0.0
+    Fogy:
+      BlendWeight: 0.0
+    Rainy:
+      BlendWeight: 0.0
+    LightRainy:
+      BlendWeight: 100.0
+      WeatherDurationMin: 60.0
+      WeatherDurationMax: 120.0
+      MaximumRepeatAmount: -1
+      MaximumCooldownWeatherAmount: 0
+
+  # Cordon: 100% Stormy
+  KordonWeatherSelection:
+    Clearly:
+      BlendWeight: 0.0
+    Cloudy:
+      BlendWeight: 0.0
+    Fogy:
+      BlendWeight: 0.0
+    LightRainy:
+      BlendWeight: 0.0
+    Rainy:
+      BlendWeight: 0.0
+    Stormy:
+      BlendWeight: 100.0
+      WeatherDurationMin: 60.0
+      WeatherDurationMax: 120.0
+      MaximumRepeatAmount: -1
+      MaximumCooldownWeatherAmount: 0
+
+  # Garbage: 100% Rainy
+  GarbageWeather:
+    Clearly:
+      BlendWeight: 0.0
+    Cloudy:
+      BlendWeight: 0.0
+    Fogy:
+      BlendWeight: 0.0
+    LightRainy:
+      BlendWeight: 0.0
+    Rainy:
+      BlendWeight: 100.0
+      WeatherDurationMin: 60.0
+      WeatherDurationMax: 120.0
+      MaximumRepeatAmount: -1
+      MaximumCooldownWeatherAmount: 0

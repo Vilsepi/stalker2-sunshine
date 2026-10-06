@@ -113,6 +113,21 @@ class TestVariant(unittest.TestCase):
             self.assertGreater(share_after, share_before, sid)
 
 
+    def test_debug_forces_single_weather(self):
+        variant = build_variant(self.vanilla, load_yaml("debug.yml"))
+        expected = {
+            "LesserZoneWeather": "Clearly",
+            "Region_ChemicalPlant": "Fogy",
+            "BurnForestRegionWeather": "LightRainy",
+            "KordonWeatherSelection": "Stormy",
+            "GarbageWeather": "Rainy",
+        }
+        for sid, target in expected.items():
+            weights = {w: p["BlendWeight"] for w, p in variant[sid].items() if p["BlendWeight"]}
+            self.assertEqual(weights, {target: 100.0}, sid)
+            self.assertLessEqual(variant[sid][target]["WeatherDurationMax"], 120.0, sid)
+
+
 class TestBpatch(unittest.TestCase):
     def test_sunnier_bpatch_syntax(self):
         vanilla = load_yaml("vanilla.yml")

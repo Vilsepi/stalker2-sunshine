@@ -3,7 +3,7 @@
 
 import unittest
 
-from helpers import load_yaml
+from helpers import CONFIG_DIR, load_yaml
 
 from cfg_parser import Struct, load_weather_selections, merge, parse_cfg_text
 from cfg_patcher import build_variant, diff_weathers, generate_bpatch
@@ -41,18 +41,22 @@ class TestAgainstOriginal(unittest.TestCase):
         self.assertEqual(DEFAULT_OUTPUT.read_text(), generate_yml(DEFAULT_CFG),
                          "vanilla.yml is out of date, run: python3 src/cfg_to_yml.py")
 
-    def test_sunnier_bpatch_applies_to_original(self):
-        variant = build_variant(self.vanilla, load_yaml("sunnier.yml"))
-        patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
-        patched = apply_bpatch(self.original, patch_text)
+    def test_variant_bpatches_apply_to_original(self):
+        for variant_file in sorted(CONFIG_DIR.glob("*.yml")):
+            if variant_file.name == "vanilla.yml":
+                continue
+            with self.subTest(variant=variant_file.name):
+                variant = build_variant(self.vanilla, load_yaml(variant_file.name))
+                patch_text = generate_bpatch(diff_weathers(self.vanilla, variant))
+                patched = apply_bpatch(self.original, patch_text)
 
-        for sid, weathers in variant.items():
-            region = patched[sid].structs()
-            for weather_name, params in weathers.items():
-                for param, value in params.items():
-                    self.assertEqual(region[weather_name].items[param], value, f"{sid}.{weather_name}.{param}")
-            total = sum(w.items["BlendWeight"] for w in region.values())
-            self.assertGreater(total, 0, sid)
+                for sid, weathers in variant.items():
+                    region = patched[sid].structs()
+                    for weather_name, params in weathers.items():
+                        for param, value in params.items():
+                            self.assertEqual(region[weather_name].items[param], value, f"{sid}.{weather_name}.{param}")
+                    total = sum(w.items["BlendWeight"] for w in region.values())
+                    self.assertGreater(total, 0, sid)
 
     def test_bpatch_only_contains_changed_values(self):
         variant = build_variant(self.vanilla, load_yaml("test.yml"))

@@ -21,6 +21,5 @@ jobs:
       - name: Run unit tests
         run: ./tests/test.sh unit
 
-      # Only needs vanilla.yml from the repository, not the original game config
-      - name: Generate sunnier config patch
+      - name: Test generating config patch
         run: python3 src/main.py sunnier.yml

@@ -1,18 +1,7 @@
 #!/bin/bash
-# Generate the bpatch for a variant and pack it into a .pak with repak.
-# Usage: ./package.sh [variant.yml]   (a path, or a name in src/config. Default: sunnier.yml)
+# Generate the bpatch for each variant and pack it into dist/better-weather-<variant>.pak with repak.
+# Usage: ./package.sh [variant.yml ...]   (paths, or names in src/config. Default: every variant except vanilla.yml)
 set -e
-
-VARIANT="${1:-sunnier.yml}"
-# Resolve a path relative to the current directory before changing directory
-if [ -f "$VARIANT" ]; then
-    VARIANT="$(realpath "$VARIANT")"
-fi
-
-cd "$(dirname "$0")"
-MOD_DIR="dist/Sunshine_P"
-
-python3 src/main.py "$VARIANT"
 
 if ! command -v repak >/dev/null; then
     echo "Error: repak not found. Install it from https://github.com/trumank/repak/releases"
@@ -20,6 +9,27 @@ if ! command -v repak >/dev/null; then
     exit 1
 fi
 
-rm -f "$MOD_DIR.pak"
-repak pack "$MOD_DIR" "$MOD_DIR.pak"
-echo "Packed $MOD_DIR.pak, copy it to <Game folder>\\Stalker2\\Content\\Paks\\~mods"
+# Resolve paths relative to the current directory before changing directory
+VARIANTS=()
+for v in "$@"; do
+    if [ -f "$v" ]; then v="$(realpath "$v")"; fi
+    VARIANTS+=("$v")
+done
+
+cd "$(dirname "$0")"
+
+if [ ${#VARIANTS[@]} -eq 0 ]; then
+    for f in src/config/*.yml; do
+        [ "$(basename "$f")" = "vanilla.yml" ] || VARIANTS+=("$(basename "$f")")
+    done
+fi
+
+for v in "${VARIANTS[@]}"; do
+    MOD_DIR="dist/better-weather-$(basename "$v" .yml)"
+    python3 src/main.py "$v"
+    rm -f "$MOD_DIR.pak"
+    repak pack "$MOD_DIR" "$MOD_DIR.pak"
+done
+
+echo
+echo "Copy one of the paks to <Game folder>\\Stalker2\\Content\\Paks\\~mods"

@@ -20,18 +20,20 @@ Everything else in that file is kept as-is, so the mod keeps working when the ga
 
 A variant is a YAML file in `src/config/` (e.g. `sunnier.yml`). It multiplies each region's vanilla weights per weather type, with optional exact overrides per region. See `src/cfg_patcher.py` for the format.
 
-Generate the mod and pack it into `dist/Sunshine_P.pak`:
+Generate every variant (all of `src/config/*.yml` except `vanilla.yml`) and pack each into `dist/better-weather-<variant>.pak`, e.g. `dist/better-weather-sunnier.pak`:
+
+    ./package.sh
+
+Or only the given variants:
 
     ./package.sh sunnier.yml
 
-This prints a table of each region's weather chances, vanilla vs. the variant. Copy the `.pak` under `Game folder\Stalker2\Content\Paks\~mods`.
+This prints a table of each region's weather chances, vanilla vs. the variant. Copy one of the `.pak` files under `Game folder\Stalker2\Content\Paks\~mods`. Install only one variant at a time: they all contain the same patch file, so only one of them would take effect.
 
 Packing needs [repak](https://github.com/trumank/repak). On Linux/WSL, install the prebuilt binary:
 
     curl -sSL https://github.com/trumank/repak/releases/download/v0.2.3/repak_cli-x86_64-unknown-linux-gnu.tar.xz \
       | tar xJ -C ~/.local/bin --strip-components=1 repak_cli-x86_64-unknown-linux-gnu/repak
-
-GitHub Actions also builds the `.pak` on every push (downloadable from the workflow run's artifacts), and attaches it to a GitHub release when a `v*` tag is pushed.
 
 To only generate the patch file without packing:
 
@@ -39,9 +41,7 @@ To only generate the patch file without packing:
 
 The generated directory structure is:
 
-    dist/Sunshine_P/Stalker2/Content/GameLite/GameData/WeatherSelectionPrototypes/WeatherSelectionPrototypes_patch_Sunshine.cfg
-
-The `.pak` name must end in `_P.pak` for the game to load it.
+    dist/better-weather-sunnier/Stalker2/Content/GameLite/GameData/WeatherSelectionPrototypes/WeatherSelectionPrototypes_patch_Sunshine.cfg
 
 ## Development
 

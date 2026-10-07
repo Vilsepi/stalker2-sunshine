@@ -29,6 +29,9 @@ SRC_DIR = Path(__file__).resolve().parent
 CONFIG_DIR = SRC_DIR / "config"
 DIST_DIR = SRC_DIR.parent / "dist"
 MOD_NAME = "Sunshine"
+# Each variant is packed as its own pak, e.g. better-weather-sunnier.pak
+PAK_PREFIX = "better-weather"
+# Same patch path in every variant, so that installing two variants can't apply both patches
 PATCH_PATH = Path("Stalker2/Content/GameLite/GameData/WeatherSelectionPrototypes") / f"WeatherSelectionPrototypes_patch_{MOD_NAME}.cfg"
 
 TABLE_WEATHERS = ["Clearly", "Cloudy", "Fogy", "Stormy", "LightRainy", "Rainy"]
@@ -79,7 +82,7 @@ if __name__ == "__main__":
     variant = build_variant(vanilla, load_yaml(variant_path))
     changes = diff_weathers(vanilla, variant)
 
-    mod_dir = DIST_DIR / f"{MOD_NAME}_P"
+    mod_dir = DIST_DIR / f"{PAK_PREFIX}-{variant_path.stem}"
     shutil.rmtree(mod_dir, ignore_errors=True)
     output_path = mod_dir / PATCH_PATH
     write_cfg(generate_bpatch(changes), output_path)

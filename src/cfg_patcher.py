@@ -107,6 +107,6 @@ def generate_bpatch(changes: Weathers) -> str:
 
 
 def write_cfg(content: str, output_path: Path) -> None:
-    """Write a .cfg file like the game's own: UTF-8 with BOM and CRLF line endings."""
+    """Write a .cfg file like the game's own since 2.0: UTF-8 without BOM, LF line endings."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_bytes(b"\xef\xbb\xbf" + content.replace("\n", "\r\n").encode("utf-8"))
+    output_path.write_bytes(content.encode("utf-8"))

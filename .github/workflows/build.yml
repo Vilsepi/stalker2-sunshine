@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+env:
+  REPAK_VERSION: v0.2.3
+  REPAK_SHA256: 933bdb8e26f34e8fd70ea50201efca39df041de58aa83b1cd6eb83da124a2046
+
+jobs:
+  pak:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Install repak
+        run: |
+          archive=repak_cli-x86_64-unknown-linux-gnu.tar.xz
+          curl -sSLO "https://github.com/trumank/repak/releases/download/$REPAK_VERSION/$archive"
+          echo "$REPAK_SHA256  $archive" | sha256sum -c -
+          tar xJf "$archive"
+          mkdir -p "$HOME/.local/bin"
+          mv repak_cli-x86_64-unknown-linux-gnu/repak "$HOME/.local/bin/"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Package sunnier variant
+        run: ./package.sh sunnier.yml
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Sunshine_P
+          path: dist/Sunshine_P.pak
+          if-no-files-found: error
+
+      - name: Attach to GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/Sunshine_P.pak --generate-notes

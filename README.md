@@ -26,7 +26,14 @@ Generate the mod and pack it into `dist/Sunshine_P.pak`:
 
 This prints a table of each region's weather chances, vanilla vs. the variant. Copy the `.pak` under `Game folder\Stalker2\Content\Paks\~mods`.
 
-Packing needs [repak](https://github.com/trumank/repak). To only generate the patch file without packing:
+Packing needs [repak](https://github.com/trumank/repak). On Linux/WSL, install the prebuilt binary:
+
+    curl -sSL https://github.com/trumank/repak/releases/download/v0.2.3/repak_cli-x86_64-unknown-linux-gnu.tar.xz \
+      | tar xJ -C ~/.local/bin --strip-components=1 repak_cli-x86_64-unknown-linux-gnu/repak
+
+GitHub Actions also builds the `.pak` on every push (downloadable from the workflow run's artifacts), and attaches it to a GitHub release when a `v*` tag is pushed.
+
+To only generate the patch file without packing:
 
     python3 src/main.py sunnier.yml
 

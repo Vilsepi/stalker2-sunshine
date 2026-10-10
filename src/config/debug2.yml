@@ -10,7 +10,7 @@
 # so that the region re-selects its weather every 1-2 minutes. The weather that is
 # active when you load a save still runs out its own duration first.
 #
-# Unlimited repeats (-1) and no cooldown, like the game's own forced weather.
+# Unlimited repeats (50) and no cooldown, like the game's own forced weather.
 
 overrides:
 
@@ -25,10 +25,10 @@ overrides:
     Rainy:
       BlendWeight: 0.0
     Clearly:
-      BlendWeight: 100.0
-      WeatherDurationMin: 60.0
-      WeatherDurationMax: 120.0
-      MaximumRepeatAmount: -1
+      BlendWeight: 900.0
+      WeatherDurationMin: 30.0
+      WeatherDurationMax: 60.0
+      MaximumRepeatAmount: 50
       MaximumCooldownWeatherAmount: 0
 
   # Chemical Plant: 100% Fogy
@@ -42,10 +42,10 @@ overrides:
     Rainy:
       BlendWeight: 0.0
     Fogy:
-      BlendWeight: 100.0
-      WeatherDurationMin: 60.0
-      WeatherDurationMax: 120.0
-      MaximumRepeatAmount: -1
+      BlendWeight: 900.0
+      WeatherDurationMin: 30.0
+      WeatherDurationMax: 60.0
+      MaximumRepeatAmount: 50
       MaximumCooldownWeatherAmount: 0
 
   # Burnt Forest: 100% LightRainy
@@ -59,10 +59,10 @@ overrides:
     Rainy:
       BlendWeight: 0.0
     LightRainy:
-      BlendWeight: 100.0
-      WeatherDurationMin: 60.0
-      WeatherDurationMax: 120.0
-      MaximumRepeatAmount: -1
+      BlendWeight: 900.0
+      WeatherDurationMin: 30.0
+      WeatherDurationMax: 60.0
+      MaximumRepeatAmount: 50
       MaximumCooldownWeatherAmount: 0
 
   # Cordon: 100% Stormy
@@ -78,10 +78,10 @@ overrides:
     Rainy:
       BlendWeight: 0.0
     Stormy:
-      BlendWeight: 100.0
-      WeatherDurationMin: 60.0
-      WeatherDurationMax: 120.0
-      MaximumRepeatAmount: -1
+      BlendWeight: 900.0
+      WeatherDurationMin: 30.0
+      WeatherDurationMax: 60.0
+      MaximumRepeatAmount: 50
       MaximumCooldownWeatherAmount: 0
 
   # Garbage: 100% Rainy
@@ -95,8 +95,8 @@ overrides:
     LightRainy:
       BlendWeight: 0.0
     Rainy:
-      BlendWeight: 100.0
-      WeatherDurationMin: 60.0
-      WeatherDurationMax: 120.0
-      MaximumRepeatAmount: -1
+      BlendWeight: 900.0
+      WeatherDurationMin: 30.0
+      WeatherDurationMax: 60.0
+      MaximumRepeatAmount: 50
       MaximumCooldownWeatherAmount: 0

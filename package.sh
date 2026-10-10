@@ -28,7 +28,8 @@ for v in "${VARIANTS[@]}"; do
     MOD_DIR="dist/better-weather-$(basename "$v" .yml)"
     python3 src/main.py "$v"
     rm -f "$MOD_DIR.pak"
-    repak pack "$MOD_DIR" "$MOD_DIR.pak"
+    # V11 matches the game's own paks; repak defaults to V8B
+    repak pack --version V11 "$MOD_DIR" "$MOD_DIR.pak"
 done
 
 echo
